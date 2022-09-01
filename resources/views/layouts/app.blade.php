@@ -47,6 +47,8 @@
         <script src="{{asset('js/main.js')}}"></script>
         <script src="{{asset('js/submit.js')}}"></script>
         <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+        <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js" charset="utf-8"></script>
         @livewireScripts
         @stack('scripts')
     </body>

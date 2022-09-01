@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\RequerimentoChart;
 use App\Http\Requests\RequerimentoRequest;
 use App\Models\Checklist;
 use App\Models\Cnae;
@@ -71,7 +72,29 @@ class RequerimentoController extends Controller
         }
         $tipos = Requerimento::TIPO_ENUM;
 
-        return view('requerimento.index', compact('requerimentos', 'tipos', 'filtro'));
+        $data = Requerimento::where('status', '!=', Requerimento::STATUS_ENUM['cancelada'])
+        ->get()->groupBy(function ($requerimento) {
+            return $requerimento->status();
+        })->map(function ($item) {
+            return count($item);
+        });
+
+        $chart = new RequerimentoChart;
+        $chart->title("Requerimentos por status");
+        $chart->labels($data->keys());
+        $chart->displayAxes(false);
+
+        $dataset = $chart->dataset('Requerimentos por status', 'pie', $data->values());
+        $dataset->backgroundColor(collect(['#7158e2','#3ae374', '#ff3838']));
+
+        $chart->options([
+            'responsive' => true,
+            'showTooltips' => false,
+            'plugins' => '{datalabels: {color: \'red\'}}',
+        ]);
+
+
+        return view('requerimento.index', compact('requerimentos', 'tipos', 'filtro', 'chart'));
     }
 
     /**

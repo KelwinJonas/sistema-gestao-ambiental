@@ -723,6 +723,9 @@
                         {{$requerimentos->links()}}
                     </div>
                 </div>
+                <div id="app">
+                    {!! $chart->container() !!}
+                </div>
             </div>
             <div class="col-md-3">
 
@@ -1182,6 +1185,7 @@
                 });
             }
         </script>
+        {!! $chart->script() !!}
     @endpush
 @endsection
 </x-app-layout>
