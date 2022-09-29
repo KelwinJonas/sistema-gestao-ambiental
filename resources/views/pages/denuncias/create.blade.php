@@ -302,6 +302,15 @@
                         </div>
                     </div>
                 </div>
+                <p>Click the button to get your coordinates.</p>
+                <button onclick="getLocation()">Try It</button>
+                <p id="demo"></p>
+                <iframe
+                    id="localizacao"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3942.0563497105136!2d-36.4660620859275!3d-8.87434659362824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7070d3170819ef3%3A0x3aeb60b2c13599b7!2sCentro%20Administrativo%20II%20-%20Garanhuns%2FPE.!5e0!3m2!1spt-BR!2sbr!4v1642601634006!5m2!1spt-BR!2sbr"
+                    width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+                <br/>
                 <div class="card-footer">
                     <div class="form-row">
                         <div class="col-md-6"></div>
@@ -373,6 +382,46 @@
 </div>
 
 @push ('scripts')
+<script>
+    var x = document.getElementById("demo");
+
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+    }
+
+    function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+    loadMap(position.coords.latitude, position.coords.longitude);
+    }
+
+    function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+        x.innerHTML = "User denied the request for Geolocation."
+        break;
+        case error.POSITION_UNAVAILABLE:
+        x.innerHTML = "Location information is unavailable."
+        break;
+        case error.TIMEOUT:
+        x.innerHTML = "The request to get user location timed out."
+        break;
+        case error.UNKNOWN_ERROR:
+        x.innerHTML = "An unknown error occurred."
+        break;
+    }
+    }
+
+    function loadMap(latitude, longitude) {
+        let loc = "https://maps.google.com/maps?q="+latitude+','+longitude+"&t=&z=15&ie=UTF8&iwloc=&output=embed";
+        document.getElementById('localizacao').src = loc;
+    }
+</script>
+
 <script>
     var $videoId = 1;
     CKEDITOR.replace('denuncia-ckeditor');
